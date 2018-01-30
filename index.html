@@ -5,30 +5,41 @@
     <title>Calendar Application</title>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.min.js">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/calendar.module.js"></script>
+    <script type="text/javascript" src="js/controllers/calendar.controller.js"></script>
 
     <link rel="stylesheet" href="/css/main.css">
     </script>
   </head>
-  <body>
-    <div class="wrapper">
+  <body ng-app="calApp">
+    <div class="wrapper" ng-controller="calendarController">
       <aside class="sidebar">
         <div class="control-group">
-          <label for="start-date">Start Date</label>
-          <input type="text" name="start-date" value="start-date">
+          <label for="month">Month</label>
+          <select name="month" ng-init="startMonth = months[0]" ng-model="startMonth" ng-options="m as m.label for m in months track by m.value"></select>
+        </div>
+        <div class="control-group">
+          <label for="day">Day</label>
+          <input type="number" name="day" value="1" min="1" max="31" ng-model="day">
+        </div>
+        <div class="control-group">
+          <label for="year">Year (1970 - 2100)</label>
+          <input type="number" name="year" value="1970" min="1970" max="2100" ng-model="year">
         </div>
         <div class="control-group">
           <label for="num-days">Number of Days</label>
-          <input type="number" name="num-days" value="num-days">
+          <input type="number" name="num-days" value="1" min="1" ng-model="numDays">
         </div>
         <div class="control-group">
           <label for="country-code">Country Code</label>
-          <select class="country-code" name="country-code">
+          <select class="country-code" name="country-code" ng-init="countryCode = countryCodes[0]" ng-model="countryCode" ng-options="c as c.label for c in countryCodes track by c.code">
           </select>
         </div>
+        <button type="button" name="submit" ng-click="generateCalendar()">Generate</button>
       </aside>
       <section class="calendar">
-        <div class="month">
-          <h1>Month</h1>
+        <div class="month" ng-repeat="month in monthsToRender">
+          <h1>{{month.month}}</h1>
           <div class="days-header">
             <h3>S</h3>
             <h3>M</h3>
